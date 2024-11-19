@@ -1,11 +1,11 @@
-import React from 'react';
+import { FC } from 'react';
+import StartPage from './pages/StartPage/StartPage';
 
-
-function App() {
+const App: FC = () => {
   return (
-    <div className="App">
-      123
-    </div>
+    <section className="App">
+      <StartPage />
+    </section>
   );
 }
 

@@ -11,7 +11,7 @@ const StartPage: FC = () => {
     return (
         <section className={styles.wrapper}>
             <StartForm setStatus={setStatus} setFindStudents={setFindStudents} />
-            {status && <ResultFind findStudents={findStudents} status={status}/>}
+            {status && <ResultFind findStudentsState={[findStudents, setFindStudents]} statusState={[status, setStatus]}/>}
         </section>
     )
 }

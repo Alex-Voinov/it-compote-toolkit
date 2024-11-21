@@ -1,28 +1,143 @@
-.wrapper{
+.wrapper {
     position: absolute;
+    padding: 2vw;
     z-index: 1;
-    width: 30vw;
+    min-width: 20vw;
     min-height: 10vw;
-    max-height: 20vw;
-    overflow-y: auto;
-    border-radius: 1vw;
-    background-color: #c394d1e8;
-    border: 0.2vw solid #c5558a;
-    &>h1{
+    max-height: 40vw;
+    background-color: #43115280;
+    backdrop-filter: blur(16px);
+
+    &>h1 {
         text-align: center;
-        margin-top: 1vw;
-        font-size: 1.2vw;
-        color: #200a38;
-        margin-bottom: 1vw;
+        font-size: 1.6vw;
+        color: #d3b1f7;
+        margin-bottom: 1.5vw;
     }
 }
 
-.row{
+.matchesFoundSection {
+    max-height: 30vw;
+    overflow-y: auto;
+    border: 0.1vw #d3b1f7 solid;
+
+    &>header {
+        color: #ddc5f8;
+        width: 100%;
+        height: 3em;
+        font-size: 1vw;
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        border-bottom: 0.1vw #d3b1f7 solid;
+
+        &>div {
+            height: 100%;
+            width: 10vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.row {
+    cursor: pointer;
+    color: #d3b1f7;
     font-size: 1vw;
     font-weight: 500;
     width: 100%;
     height: 2.5em;
-    padding-left: 2em;
     display: flex;
     align-items: center;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+    &:hover {
+        background-color: rgb(155, 69, 247);
+        color: #eddffc;
+        ;
+    }
+
+    &>div {
+        height: 100%;
+        width: 10vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.buttonBlock {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 5vw;
+
+    &>button {
+        width: 10vw;
+        height: 2.5vw;
+        border: none;
+        background-color: #d3b1f7;
+        color: #431152;
+        font-size: 1vw;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+
+        &:hover {
+            background-color: #f8f1ff;
+        }
+    }
+}
+
+.single {
+    overflow-y: auto;
+
+    &>header {
+        font-size: 1.2vw;
+        height: 1.5em;
+        width: 100%;
+        border-bottom: #d3b1f7 solid 0.1vw;
+        color: #d3b1f7;
+    }
+
+    &>main {
+        width: 100%;
+    }
+}
+
+.agentTitle {
+    margin-top: 2em;
+    font-size: 1.2vw;
+    height: 1.5em;
+    width: 100%;
+    border-bottom: #d3b1f7 solid 0.1vw;
+    color: #d3b1f7;
+}
+
+.fieldSingleResult {
+    color: #d3b1f7;
+    font-size: 1vw;
+    width: 100%;
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+
+    &>div {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 1vw;
+
+        &:first-of-type {
+            width: 10vw;
+            border-right: #d3b1f7 solid 0.1vw;
+        }
+
+        &:last-of-type {
+            width: 20vw;
+
+        }
+    }
+
 }

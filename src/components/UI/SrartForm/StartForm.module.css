@@ -1,0 +1,38 @@
+.wrapper {
+    width: 50vw;
+    height: 30vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    &>h1 {
+        font-size: 4vw;
+        color: #FFFEFF;
+        font-weight: 300;
+    }
+
+    &>p {
+        font-size: 1.2vw;
+        color: #EAEAF8;
+        font-weight: 300;
+    }
+
+    &>button {
+        background-color: #F5EFFB;
+        color: #56327C;
+        font-size: 1vw;
+        border: none;
+        width: 10vw;
+        height: 3vw;
+        border-radius: 4vw;
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+        &:hover {
+            color: #6723ac;
+            background-color: #af7be7;
+        }
+    }
+}

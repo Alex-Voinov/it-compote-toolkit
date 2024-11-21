@@ -10,12 +10,15 @@ const $api = axios.create({
 })
 
 export default class Server {
-    static getUset(
+    static getStudent(
         fullName: string,
         email: string,
         tel: string,
     ): Promise<AxiosResponse<IStudentSerch>> {
         return $api.get<IStudentSerch>('/get-student', { params: { fullName, email, tel } })
+    }
+    static getDisciplines(): Promise<AxiosResponse<{ [key: string]: string[] }>> {
+        return $api.get<{ [key: string]: string[] }>('/get-disciplines')
     }
 }
 

@@ -3,6 +3,7 @@ import StartInput from '../StartInput/StartInput'
 import Server from '../../../servies/Server'
 import styles from './StartForm.module.css'
 import IStudent from '../../../models/Student'
+import Loader from '../../Loader/Loader'
 
 
 const setInputs = [
@@ -26,6 +27,7 @@ interface IStartForm {
 }
 
 const StartForm: FC<IStartForm> = ({ setStatus, setFindStudents }) => {
+    const [isLoading, setLoading] = useState(false);
     const inputsStates = new Array(setInputs.length).fill('').map(useState) as [string, Dispatch<SetStateAction<string>>][]
     const inputs = setInputs.map(
         (inputData, number) => <StartInput
@@ -37,12 +39,15 @@ const StartForm: FC<IStartForm> = ({ setStatus, setFindStudents }) => {
     )
     return (
         <form className={styles.wrapper}>
+            {isLoading&&<Loader/>}
             <h1>Запись в группу</h1>
             <p>Заполните информацию ниже</p>
             {inputs}
             <button onClick={e => {
                 e.preventDefault()
-                Server.getUset(...(inputsStates.map(state => state[0]) as [string, string, string])).then(result => {
+                setLoading(true)
+                Server.getStudent(...(inputsStates.map(state => state[0]) as [string, string, string])).then(result => {
+                    setLoading(false)
                     if (result.data.status && result.data.studentsData) {
                         setStatus(result.data.status)
                         setFindStudents(result.data.studentsData)

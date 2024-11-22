@@ -2,15 +2,19 @@ import { createContext, StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-import Store from './store';
+import Student from './stores/student';
+import Ntf from './stores/ntf';
 
-const store = new Store();
+const student = new Student();
+const notification = new Ntf()
 
 export const GlobalData = createContext<{
-  store: Store,
+  student: Student,
+  notification: Ntf,
 }>
   ({
-    store,
+    student,
+    notification
   })
 
 

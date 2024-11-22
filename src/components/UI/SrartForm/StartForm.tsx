@@ -1,9 +1,10 @@
-import { FC, useState, Dispatch, SetStateAction } from 'react'
+import { FC, useState, Dispatch, SetStateAction, useContext } from 'react'
 import StartInput from '../StartInput/StartInput'
 import Server from '../../../servies/Server'
 import styles from './StartForm.module.css'
 import IStudent from '../../../models/Student'
 import Loader from '../../Loader/Loader'
+import { GlobalData } from '../../..'
 
 
 const setInputs = [
@@ -27,6 +28,7 @@ interface IStartForm {
 }
 
 const StartForm: FC<IStartForm> = ({ setStatus, setFindStudents }) => {
+    const { notification } = useContext(GlobalData)
     const [isLoading, setLoading] = useState(false);
     const inputsStates = new Array(setInputs.length).fill('').map(useState) as [string, Dispatch<SetStateAction<string>>][]
     const inputs = setInputs.map(
@@ -37,23 +39,35 @@ const StartForm: FC<IStartForm> = ({ setStatus, setFindStudents }) => {
             state={inputsStates[number]}
         />
     )
+    const hasAnyData = inputsStates.map(state => state[0]).some(inputText => inputText.trim() !== '')
     return (
         <form className={styles.wrapper}>
-            {isLoading&&<Loader/>}
+            {isLoading && <Loader />}
             <h1>Запись в группу</h1>
             <p>Заполните информацию ниже</p>
             {inputs}
-            <button onClick={e => {
-                e.preventDefault()
-                setLoading(true)
-                Server.getStudent(...(inputsStates.map(state => state[0]) as [string, string, string])).then(result => {
-                    setLoading(false)
-                    if (result.data.status && result.data.studentsData) {
-                        setStatus(result.data.status)
-                        setFindStudents(result.data.studentsData)
-                    }
-                })
-            }}>Подтвердить</button>
+            <button
+                disabled={!hasAnyData}
+                onClick={e => {
+                    e.preventDefault()
+                    setLoading(true)
+                    Server.getStudent(...(inputsStates.map(state => state[0]) as [string, string, string])).then(result => {
+                        setLoading(false)
+                        if (result.data.status && result.data.studentsData) {
+                            setStatus(result.data.status)
+                            setFindStudents(result.data.studentsData)
+                        }
+                        else {
+                            notification.notifyHHBadResponse();
+                        }
+                    }).catch(er => {
+                        setLoading(false)
+                        notification.showError(
+                            'Ошибка',
+                            `Список студентов из hollohop не загружен: ${er.message ? er.message : 'Код ошибки не получен'}.`
+                        )
+                    })
+                }}>Подтвердить</button>
         </form>
     )
 }

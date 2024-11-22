@@ -6,32 +6,47 @@ import IStudent from '../../models/Student'
 import { GlobalData } from '../..'
 import SelectDisciplines from '../../components/SelectDisciplines/SelectDisciplines'
 import { observer } from 'mobx-react-lite';
-import Server from '../../servies/Server'
+import { AnimatePresence } from "framer-motion";
 
 const StartPage: FC = () => {
-    const { store } = useContext(GlobalData)
+    const { student } = useContext(GlobalData)
     const [status, setStatus] = useState('');
     const [findStudents, setFindStudents] = useState<IStudent | IStudent[] | null>(null);
-    useEffect(() => {
-        if (store.student && store.selectDiscipline.length) {
-            store.prepareDataForGroupSearch()
-            if (store.age && store.lastThems.length)
-            Server.pickGroup(
-                store.selectDiscipline,
-                store.level,
-                store.age,
-                store.lastThems
-            )
-        }
-    }, [store.selectDiscipline])
+    // useEffect(() => {
+    //     (student.selectDiscipline)
+    //     if (student.student && student.selectDiscipline.length && student.level) {
+    //         student.prepareDataForGroupSearch()
+    //         if (student.age && student.lastThems.length)
+    //             Server.pickGroup(
+    //                 student.selectDiscipline,
+    //                 student.level,
+    //                 student.age,
+    //                 student.lastThems
+    //             )
+    //         else notification.showError(
+    //             'Ошибка',
+    //             'Поиск группы не возможен, так как не установен возраст ребенка и последняя пройденная тема'
+    //         )
+    //     } else notification.showError(
+    //         'Ошибка',
+    //         'Подготовка данных для поиска группы не возможна, так как не выбрана дисциплина, студент или уровень знаний'
+    //     )
+    // }, [student.selectDiscipline])
     return (
         <section className={styles.wrapper}>
             <StartForm setStatus={setStatus} setFindStudents={setFindStudents} />
-            {status && <ResultFind
-                findStudentsState={[findStudents, setFindStudents]}
-                statusState={[status, setStatus]}
-            />}
-            {store.student && !store.selectDiscipline.length && <SelectDisciplines />}
+            {status && <AnimatePresence>
+                <ResultFind
+                    findStudentsState={[findStudents, setFindStudents]}
+                    statusState={[status, setStatus]}
+                />
+            </AnimatePresence>}
+            {student.student
+                && !student.selectDiscipline.length
+                && <AnimatePresence>
+                    <SelectDisciplines />
+                </AnimatePresence>
+            }
         </section>
     )
 }

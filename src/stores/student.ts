@@ -1,9 +1,9 @@
-import IStudent from "./models/Student";
-import Server from "./servies/Server"
+import IStudent from "../models/Student";
+import Server from "../servies/Server"
 import { makeAutoObservable } from "mobx";
-import getYearDifference from "./utilities/dateFunc";
+import getYearDifference from "../utilities/dateFunc";
 
-export default class Store {
+export default class Student {
     disciplines: string[] = []
     student: IStudent | null = null
     selectDiscipline: string = ''
@@ -47,7 +47,9 @@ export default class Store {
 
     async uploadDisciplines() {
         const response = await Server.getDisciplines();
-        if (response.data.Disciplines)
+        if (response.data.Disciplines) {
             this.disciplines = response.data.Disciplines
+            return this.disciplines
+        }
     }
 }

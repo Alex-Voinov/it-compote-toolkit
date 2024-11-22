@@ -2,6 +2,7 @@ import { Dispatch, FC, SetStateAction, MouseEvent, useContext, useState } from '
 import styles from './ResultFind.module.css'
 import IStudent from '../../models/Student'
 import { GlobalData } from '../..'
+import { motion } from "framer-motion";
 
 interface IResultFind {
     statusState: [string, Dispatch<SetStateAction<string>>],
@@ -44,7 +45,7 @@ const agentFieldForVisibleSingleResult = {
 
 
 const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
-    const { store } = useContext(GlobalData)
+    const { student } = useContext(GlobalData)
     const [status, setStatus] = statusState;
     const [findStudents, setFindStudents] = findStudentsState;
     const [selectStudentsFromList, setSelectStudentsFromList] = useState(0);
@@ -146,15 +147,19 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
     const select = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (statusFind === StatusFind.perfectMatch)
-            store.selectStudent(findStudents as IStudent)
+            student.selectStudent(findStudents as IStudent)
         if (statusFind === StatusFind.matchesFound)
-            store.selectStudent((findStudents as IStudent[])[selectStudentsFromList])
+            student.selectStudent((findStudents as IStudent[])[selectStudentsFromList])
         setStatus('')
     }
 
     return (
-        <section
+        <motion.section
             className={styles.wrapper}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
         >
             <h1>{setTitleForDifferentStatus[statusFind]}</h1>
             {generateVision(findStudents, statusFind)}
@@ -170,7 +175,7 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
                             </button></>
                 }
             </div>
-        </section>
+        </motion.section>
     )
 }
 

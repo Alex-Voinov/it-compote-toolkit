@@ -1,15 +1,25 @@
-const getYearDifference = (date1: Date, date2: Date) => {
-    const year1 = date1.getFullYear();
-    const year2 = date2.getFullYear();
+const calculateAge = (birthDayString: string) => {
+    const currentDate = new Date();
+    const PresentDate = {
+        Year: currentDate.getFullYear(),
+        Month: currentDate.getMonth(),
+        Day: currentDate.getDate()
+    }
 
-    // Проверяем, наступила ли дата в этом году
-    const isBeforeDate1 = 
-        date1.getMonth() > date2.getMonth() || 
-        (date1.getMonth() === date2.getMonth() && date1.getDate() > date2.getDate());
 
-    const difference = year2 - year1;
+    const birthDay = new Date(birthDayString)
+    const birthDate = {
+        Year: birthDay.getFullYear(),
+        Month: birthDay.getMonth(),
+        Day: birthDay.getDate()
+    }
 
-    return isBeforeDate1 ? difference - 1 : difference;
+    const age = [Math.abs(PresentDate.Year - birthDate.Year), Math.abs(PresentDate.Month - birthDate.Month), Math.abs(PresentDate.Day - birthDate.Day)]
+
+    if (age[1] > 5 && age[2] >= 1) {
+        return (age[0] + 1)
+    }
+    return (age[0])
 }
 
-export default getYearDifference;
+export default calculateAge

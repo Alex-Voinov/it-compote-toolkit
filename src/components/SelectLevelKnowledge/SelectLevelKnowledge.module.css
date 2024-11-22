@@ -1,0 +1,20 @@
+.wrapper{
+    position: absolute;
+    z-index: 4;
+    width: 40vw;
+    background-color: #43115280;
+    backdrop-filter: blur(16px);
+    padding: 2vw;
+    &>header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &>main{
+        width: 100%;
+        min-height: 10vw;
+        max-height: 30vw;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.432);
+    }
+}

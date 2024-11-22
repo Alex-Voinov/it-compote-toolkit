@@ -45,10 +45,11 @@ const StartPage: FC = () => {
                     />
                 }
                 {student.student
+                    && !student.level.length
                     && (student.selectDiscipline.length
-                    ? <SelectLevelKnowledge />
-                    :
-                    <SelectDisciplines />)
+                        ? <SelectLevelKnowledge />
+                        :
+                        <SelectDisciplines />)
                 }
             </AnimatePresence>
         </section>

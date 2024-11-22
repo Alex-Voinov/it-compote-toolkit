@@ -45,7 +45,7 @@ const agentFieldForVisibleSingleResult = {
 
 
 const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
-    const { student } = useContext(GlobalData)
+    const { student, notification } = useContext(GlobalData)
     const [status, setStatus] = statusState;
     const [findStudents, setFindStudents] = findStudentsState;
     const [selectStudentsFromList, setSelectStudentsFromList] = useState(0);
@@ -150,6 +150,9 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
             student.selectStudent(findStudents as IStudent)
         if (statusFind === StatusFind.matchesFound)
             student.selectStudent((findStudents as IStudent[])[selectStudentsFromList])
+        const age = student.defineAge();
+        if(age) notification.showInfo('Успешно', `Определен возраст выбранного ученика: ${age}.`)
+            else notification.showError('Ошибка', 'Не удалось определить возраст выбранного ученика.')
         setStatus('')
     }
 

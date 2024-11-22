@@ -2,9 +2,10 @@ import { FC, useContext, useState } from 'react'
 import { GlobalData } from '../..'
 import styles from './SelectDisciplines.module.css'
 import { motion } from "framer-motion";
+import { observer } from 'mobx-react-lite';
 
 const SelectDisciplines: FC = () => {
-    const { student } = useContext(GlobalData)
+    const { student, notification } = useContext(GlobalData)
     const [disciplineNumber, setDisciplineNumber] = useState(-1);
     return (
         <motion.section
@@ -25,7 +26,23 @@ const SelectDisciplines: FC = () => {
                         >
                             {discipline}
                         </div>)
-                        : 'Дисциплины не загружены'
+                        :
+                        <div className={styles.notLoaded}>
+                            <h1>Дисциплины не загружены</h1>
+                            <button onClick={() => {
+                                student.uploadDisciplines().then(
+                                    disciplines => notification.showInfo(
+                                        'Успешно',
+                                        `Коллечество загруженных дисциплин из hollohop: ${disciplines?.length}.`
+                                    )
+                                ).catch(
+                                    (error) => notification.showError(
+                                        'Ошибка',
+                                        `Дисциплины из hollohop не загружены: ${error.message ? error.message : 'код ошибки не получен'}.`
+                                    )
+                                )
+                            }}>Загрузить</button>
+                        </div>
                 }
             </div>
             <button
@@ -42,4 +59,4 @@ const SelectDisciplines: FC = () => {
     )
 }
 
-export default SelectDisciplines
+export default observer(SelectDisciplines)

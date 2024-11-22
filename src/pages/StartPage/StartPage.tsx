@@ -7,6 +7,8 @@ import { GlobalData } from '../..'
 import SelectDisciplines from '../../components/SelectDisciplines/SelectDisciplines'
 import { observer } from 'mobx-react-lite';
 import { AnimatePresence } from "framer-motion";
+import SelectLevelKnowledge from '../../components/SelectLevelKnowledge/SelectLevelKnowledge'
+
 
 const StartPage: FC = () => {
     const { student } = useContext(GlobalData)
@@ -35,18 +37,20 @@ const StartPage: FC = () => {
     return (
         <section className={styles.wrapper}>
             <StartForm setStatus={setStatus} setFindStudents={setFindStudents} />
-            {status && <AnimatePresence>
-                <ResultFind
-                    findStudentsState={[findStudents, setFindStudents]}
-                    statusState={[status, setStatus]}
-                />
-            </AnimatePresence>}
-            {student.student
-                && !student.selectDiscipline.length
-                && <AnimatePresence>
-                    <SelectDisciplines />
-                </AnimatePresence>
-            }
+            <AnimatePresence>
+                {status &&
+                    <ResultFind
+                        findStudentsState={[findStudents, setFindStudents]}
+                        statusState={[status, setStatus]}
+                    />
+                }
+                {student.student
+                    && (student.selectDiscipline.length
+                    ? <SelectLevelKnowledge />
+                    :
+                    <SelectDisciplines />)
+                }
+            </AnimatePresence>
         </section>
     )
 }

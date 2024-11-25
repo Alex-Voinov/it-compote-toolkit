@@ -151,8 +151,8 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
         if (statusFind === StatusFind.matchesFound)
             student.selectStudent((findStudents as IStudent[])[selectStudentsFromList])
         const age = student.defineAge();
-        if(age) notification.showInfo('Успешно', `Определен возраст выбранного ученика: ${age}.`)
-            else notification.showError('Ошибка', 'Не удалось определить возраст выбранного ученика.')
+        if (age) notification.showInfo('Успешно', `Определен возраст выбранного студента: ${age}.`)
+        else notification.showError('Ошибка', 'Не удалось определить возраст выбранного студента.')
         setStatus('')
     }
 

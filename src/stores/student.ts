@@ -2,6 +2,7 @@ import IStudent from "../models/Student";
 import Server from "../servies/Server"
 import { makeAutoObservable } from "mobx";
 import calculateAge from "../utilities/dateFunc";
+import ITheme from "../models/Theme";
 
 export default class Student {
     disciplines: string[] = []
@@ -9,7 +10,7 @@ export default class Student {
     selectDiscipline: string = ''
     level: string = ''
     age: number | null = null;
-    lastThems: string = ''
+    lastThems: { [key: string]: ITheme } = {}
 
     constructor() {
         makeAutoObservable(this);
@@ -22,6 +23,13 @@ export default class Student {
             return this.age;
         }
         return 0;
+    }
+
+    async defineLatsThems() {
+        const response = await Server.getLastThems(this.student!.ClientId!)
+        const themes = response.data
+        this.lastThems = themes;
+        return Object.keys(themes).length
     }
 
     selectStudent(studentData: IStudent) {

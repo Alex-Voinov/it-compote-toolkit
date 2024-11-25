@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
 import IStudentSerch from '../models/StudentSerch';
+import ITheme from '../models/Theme';
 
 const API_URL = `http://localhost:5000/api`;
 
@@ -28,6 +29,16 @@ export default class Server {
     static getDisciplines(): Promise<AxiosResponse<{ [key: string]: string[] }>> {
         return $api.get<{ [key: string]: string[] }>('/get-disciplines')
     }
+
+    static getLastThems(studentId: number): Promise<AxiosResponse<{ [key: string]: ITheme }>> {
+        return $api.get<{ [key: string]: ITheme }>(
+            '/get-last-thems', {
+            params: {
+                studentId
+            }
+        })
+    }
+
     static pickGroup(
         discipline: string,
         level: string,

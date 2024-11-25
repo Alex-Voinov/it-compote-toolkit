@@ -51,6 +51,18 @@ const SelectDisciplines: FC = () => {
                 onClick={e => {
                     e.preventDefault();
                     student.setSelectDiscipline(disciplineNumber)
+                    if (student.student?.ClientId) {
+                        student.defineLatsThems().then(amountThemes => {
+                            if (amountThemes) {
+                                notification.showInfo('Успешно', `Найдено последних тем по разным дисциплинам: ${amountThemes}.`)
+                            }
+                            else notification.showInfo('Внимание', `У студента не определенно ни одной последней темы в holihop.`)
+                        }).catch(
+                            () => {
+                                notification.showError('Ошибка', 'Сервер не отправил данные о последних темах ученика.')
+                            }
+                        )
+                    } else notification.showError('Ошибка', 'Не удалось определить Id выбранного студента для определения последней пройденной темы.')
                 }}
             >
                 Выбрать

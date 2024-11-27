@@ -11,9 +11,14 @@ export default class Student {
     level: string = ''
     age: number | null = null;
     lastThems: { [key: string]: ITheme } = {}
+    allTopic: { [key: string]: string[] } = {}
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    setupAge(newAge: string) {
+        this.age = Number(newAge)
     }
 
     defineAge() {
@@ -50,5 +55,11 @@ export default class Student {
             this.disciplines = response.data.Disciplines
             return this.disciplines
         }
+    }
+
+    async getTopicsAcrossDisciplines() {
+        const response = await Server.getTopicsAcrossDisciplines();
+        const topics = response.data;
+        this.allTopic = topics
     }
 }

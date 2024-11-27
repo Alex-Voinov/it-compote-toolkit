@@ -5,17 +5,17 @@ import { observer } from 'mobx-react-lite'
 import { motion } from "framer-motion";
 import { StatusNtf } from '../../../stores/ntf';
 
-const setStatusStyles: {[key: number]: CSSProperties} = {
+const setStatusStyles: { [key: number]: CSSProperties } = {
     [StatusNtf.info]: {
         '--main_color': 'rgb(53, 172, 172)',
         '--second_color': 'rgb(31, 129, 129)',
         backgroundColor: 'rgba(26, 124, 131, 0.466)',
-    } as CSSProperties, 
+    } as CSSProperties,
     [StatusNtf.error]: {
         '--main_color': 'rgb(202, 17, 33)',
         '--second_color': 'rgb(175, 0, 15)',
         backgroundColor: 'rgba(131, 26, 35, 0.466)',
-    } as CSSProperties, 
+    } as CSSProperties,
 }
 
 const Notification: FC = () => {
@@ -23,7 +23,7 @@ const Notification: FC = () => {
     useEffect(() => {
         const autodestruction = setTimeout(() => notification.hide(), 5000)
         return () => clearTimeout(autodestruction);
-    }, [])
+    }, [notification.text])
     return (
         <motion.section
             initial={{ opacity: 0 }}

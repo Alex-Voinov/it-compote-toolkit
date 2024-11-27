@@ -1,0 +1,111 @@
+import { FC, useContext, useState } from 'react'
+import { GlobalData } from '../..'
+import styles from './PickGroup.module.css'
+import { observer } from 'mobx-react-lite';
+import range from '../../utilities/range';
+
+
+interface IRowField {
+    title: string;
+    buttonText: string;
+    isComplete?: boolean;
+    variables: string[];
+    setupNewValue: (val: string) => void;
+}
+
+const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, isComplete = true }) => {
+    const [openDropdawn, setOpenDropdawn] = useState(false);
+    return <div className={styles.row}>
+        <div className={styles.title}>{title}</div>
+        <button
+            style={{ backgroundColor: isComplete ? 'rgb(63, 224, 189)' : 'rgb(107, 107, 107)' }}
+            onClick={e => {
+                e.preventDefault();
+
+                setOpenDropdawn(true);
+
+            }}
+        >
+            {buttonText}
+        </button>
+        {openDropdawn && <div
+            className={styles.dropdawn}
+        >
+            {variables.map(variable => <div onClick={() => {
+                setOpenDropdawn(false)
+                setupNewValue(variable)
+            }}>
+                {variable}
+            </div>)}
+        </div>}
+    </div>
+};
+
+const PickGroup: FC = () => {
+    const { student } = useContext(GlobalData)
+    const rowData: IRowField[] = [
+        {
+            title: 'Возраст',
+            buttonText: student.age
+                ? student.age.toString()
+                : 'Не определен',
+            isComplete: Boolean(student.age),
+            variables: range(5, 50).map(String),
+            setupNewValue: student.setupAge.bind(student),
+        },
+        {
+            title: 'Дисциплина',
+            buttonText: student.selectDiscipline,
+            variables: student.disciplines,
+            setupNewValue: () => { },
+        },
+        {
+            title: 'Последняя тема',
+            buttonText: (student.selectDiscipline && student.selectDiscipline in student.lastThems)
+                ? student.selectDiscipline
+                : 'Не определена',
+            isComplete: Boolean(student.selectDiscipline && student.selectDiscipline in student.lastThems),
+            variables: student.selectDiscipline && student.selectDiscipline in student.allTopic
+                ? student.allTopic[student.selectDiscipline].map(
+                    str => str.replace(/^[\s*]+|[\s*]+$/g, '')
+                ).filter(
+                    dis => dis && !(dis.toLowerCase().includes('заглушка'))
+                )
+                : ['Нет тем по выбранной дисциплине'],
+            setupNewValue: () => { },
+        },
+        {
+            title: 'Уровень',
+            buttonText: student.level,
+            variables: [],
+            setupNewValue: () => { },
+        },
+    ]
+    const hasAllData = rowData.map(el => !('isComplete' in el) || el.isComplete).every(element => element === true);
+    return (
+        <div className={styles.wrapper}>
+            <h1>Проверка введенных данных</h1>
+            <h2>{`Студент: ${student.student?.LastName} ${student.student?.FirstName}`}</h2>
+            {rowData.map(RowField)}
+            <button
+                disabled={!hasAllData}
+                className={styles.sendData}
+                style={
+                    hasAllData ?
+                        {
+                            backgroundColor: 'rgb(63, 224, 189',
+                            cursor: 'pointer'
+                        }
+                        : {
+                            backgroundColor: 'rgb(107, 107, 107)',
+                            cursor: 'not-allowed'
+                        }
+                }
+            >
+                Найти группы
+            </button>
+        </div>
+    )
+}
+
+export default observer(PickGroup)

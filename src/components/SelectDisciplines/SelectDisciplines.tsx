@@ -54,7 +54,11 @@ const SelectDisciplines: FC = () => {
                     if (student.student?.ClientId) {
                         student.defineLatsThems().then(amountThemes => {
                             if (amountThemes) {
-                                notification.showInfo('Успешно', `Найдено последних тем по разным дисциплинам: ${amountThemes}.`)
+                                console.log(student.lastThems)
+                                if (student.selectDiscipline in student.lastThems)
+                                    notification.showInfo('Успешно', `Найдена последняя тема студента по ${student.selectDiscipline}.`)
+                                else
+                                    notification.showInfo('Внимание', `Найдены последние темы, но только по другим дисциплинам: ${amountThemes}.`)
                             }
                             else notification.showInfo('Внимание', `У студента не определенно ни одной последней темы в holihop.`)
                         }).catch(

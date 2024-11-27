@@ -1,0 +1,86 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    z-index: 6;
+    width: 40vw;
+    background-color: #43115280;
+    backdrop-filter: blur(16px);
+    padding: 3vw;
+    color: #d3b1f7;
+
+    &>h1 {
+        font-size: 2vw;
+    }
+
+    &>h2 {
+        margin-top: 1em;
+        font-size: 1.8vw;
+        margin-bottom: 1em;
+    }
+}
+
+.row {
+    position: relative;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3em;
+    font-size: 1.4vw;
+
+    &>div {
+        &.title {
+            width: 12vw;
+            text-align: left;
+        }
+
+        &.dropdawn {
+            position: absolute;
+            top: 20%;
+            right: 0;
+            width: calc(100% - 12vw);
+            max-height: 16vw;
+            overflow: auto;
+            background-color: rgba(0, 143, 143, 0.918);
+            backdrop-filter: blur(16px);
+            z-index: 7;
+            &>div{
+                text-align: center;
+                height: 2.5em;
+                font-size: 1vw;
+                color: rgb(154, 212, 212);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-bottom: 0.1vw rgb(114, 163, 163) solid;
+                cursor: pointer;
+                transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+                &:hover{
+                    background-color: rgba(2, 112, 112, 0.918);
+                    color: rgb(172, 221, 221);
+                }
+            }
+        }
+    }
+
+    &>button {
+        font-size: 1vw;
+        color: rgb(27, 48, 48);
+        width: calc(100% - 12vw);
+        height: 60%;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+}
+
+.sendData {
+    width: 28vw;
+    margin-top: 3vw;
+    height: 3vw;
+    font-size: 1vw;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+}

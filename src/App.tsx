@@ -20,6 +20,7 @@ const App: FC = () => {
         `Дисциплины из hollohop не загружены: ${error.message ? error.message : 'код ошибки не получен'}.`
       )
     )
+    student.getTopicsAcrossDisciplines()
   }, [])
   return (
     <>

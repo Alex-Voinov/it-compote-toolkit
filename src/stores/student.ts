@@ -21,6 +21,14 @@ export default class Student {
         this.age = Number(newAge)
     }
 
+    setupLevel(newLevel: string) {
+        this.level = newLevel
+    }
+
+    setupDiscipline(newDiscipline: string) {
+        this.selectDiscipline = newDiscipline
+    }
+
     defineAge() {
         // Определяем возраст ученика
         if (this.student?.Birthday) {

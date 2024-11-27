@@ -3,6 +3,7 @@ import { GlobalData } from '../..'
 import styles from './PickGroup.module.css'
 import { observer } from 'mobx-react-lite';
 import range from '../../utilities/range';
+import { setButtonTexts } from '../SelectLevelKnowledge/SelectLevelKnowledge';
 
 
 interface IRowField {
@@ -57,7 +58,7 @@ const PickGroup: FC = () => {
             title: 'Дисциплина',
             buttonText: student.selectDiscipline,
             variables: student.disciplines,
-            setupNewValue: () => { },
+            setupNewValue: student.setupDiscipline.bind(student),
         },
         {
             title: 'Последняя тема',
@@ -77,8 +78,8 @@ const PickGroup: FC = () => {
         {
             title: 'Уровень',
             buttonText: student.level,
-            variables: [],
-            setupNewValue: () => { },
+            variables: setButtonTexts,
+            setupNewValue: student.setupLevel.bind(student),
         },
     ]
     const hasAllData = rowData.map(el => !('isComplete' in el) || el.isComplete).every(element => element === true);

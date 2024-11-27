@@ -2,7 +2,7 @@ import { FC, useContext } from 'react'
 import styles from './SelectLevelKnowledge.module.css'
 import { GlobalData } from '../..'
 
-const setButtonTexts = [
+export const setButtonTexts = [
     'Easy',
     'Easy-medium',
     'Medium',

@@ -38,9 +38,7 @@ const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, 
             style={{ backgroundColor: isComplete ? 'rgb(63, 224, 189)' : 'rgb(107, 107, 107)' }}
             onClick={e => {
                 e.preventDefault();
-
                 setOpenDropdawn(true);
-
             }}
         >
             {buttonText}
@@ -79,9 +77,11 @@ const PickGroup: FC = () => {
         },
         {
             title: 'Последняя тема',
-            buttonText: student.selectLastTheme ? student.selectLastTheme : (student.selectDiscipline && student.selectDiscipline in student.lastThems)
-                ? student.selectDiscipline
-                : 'Не определена',
+            buttonText: student.selectLastTheme
+                ? student.selectLastTheme
+                : (student.selectDiscipline && student.selectDiscipline in student.lastThems)
+                    ? student.lastThems[student.selectDiscipline].Description.replace(/^[\s*]+|[\s*]+$/g, '')
+                    : 'Не определена',
             isComplete: Boolean(student.selectLastTheme || student.selectDiscipline && student.selectDiscipline in student.lastThems),
             variables: (student.selectDiscipline && student.selectDiscipline in student.allTopic)
                 ? student.allTopic[student.selectDiscipline].map(

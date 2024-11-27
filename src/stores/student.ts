@@ -12,6 +12,7 @@ export default class Student {
     age: number | null = null;
     lastThems: { [key: string]: ITheme } = {}
     allTopic: { [key: string]: string[] } = {}
+    selectLastTheme: string = ''
 
     constructor() {
         makeAutoObservable(this);
@@ -21,12 +22,17 @@ export default class Student {
         this.age = Number(newAge)
     }
 
+    setupLastTheme(newSelectTheme: string) {
+        this.selectLastTheme = newSelectTheme
+    }
+
     setupLevel(newLevel: string) {
         this.level = newLevel
     }
 
     setupDiscipline(newDiscipline: string) {
         this.selectDiscipline = newDiscipline
+        this.selectLastTheme = ''
     }
 
     defineAge() {

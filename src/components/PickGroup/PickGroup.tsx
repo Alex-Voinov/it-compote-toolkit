@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react'
+import { FC, useContext, useEffect, useRef, useState } from 'react'
 import { GlobalData } from '../..'
 import styles from './PickGroup.module.css'
 import { observer } from 'mobx-react-lite';
@@ -16,6 +16,22 @@ interface IRowField {
 
 const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, isComplete = true }) => {
     const [openDropdawn, setOpenDropdawn] = useState(false);
+
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+    const handleOutsideClick = (event: MouseEvent) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setOpenDropdawn(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, []);
+
     return <div className={styles.row}>
         <div className={styles.title}>{title}</div>
         <button
@@ -30,6 +46,7 @@ const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, 
             {buttonText}
         </button>
         {openDropdawn && <div
+            ref={dropdownRef}
             className={styles.dropdawn}
         >
             {variables.map(variable => <div onClick={() => {
@@ -62,18 +79,18 @@ const PickGroup: FC = () => {
         },
         {
             title: 'Последняя тема',
-            buttonText: (student.selectDiscipline && student.selectDiscipline in student.lastThems)
+            buttonText: student.selectLastTheme ? student.selectLastTheme : (student.selectDiscipline && student.selectDiscipline in student.lastThems)
                 ? student.selectDiscipline
                 : 'Не определена',
-            isComplete: Boolean(student.selectDiscipline && student.selectDiscipline in student.lastThems),
-            variables: student.selectDiscipline && student.selectDiscipline in student.allTopic
+            isComplete: Boolean(student.selectLastTheme || student.selectDiscipline && student.selectDiscipline in student.lastThems),
+            variables: (student.selectDiscipline && student.selectDiscipline in student.allTopic)
                 ? student.allTopic[student.selectDiscipline].map(
                     str => str.replace(/^[\s*]+|[\s*]+$/g, '')
                 ).filter(
                     dis => dis && !(dis.toLowerCase().includes('заглушка'))
                 )
                 : ['Нет тем по выбранной дисциплине'],
-            setupNewValue: () => { },
+            setupNewValue: student.setupLastTheme.bind(student),
         },
         {
             title: 'Уровень',

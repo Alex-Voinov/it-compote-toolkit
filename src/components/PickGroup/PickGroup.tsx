@@ -4,7 +4,7 @@ import styles from './PickGroup.module.css'
 import { observer } from 'mobx-react-lite';
 import range from '../../utilities/range';
 import { setButtonTexts } from '../SelectLevelKnowledge/SelectLevelKnowledge';
-
+import Loader from '../Loader/Loader';
 
 interface IRowField {
     title: string;
@@ -16,7 +16,6 @@ interface IRowField {
 
 const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, isComplete = true }) => {
     const [openDropdawn, setOpenDropdawn] = useState(false);
-
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const handleOutsideClick = (event: MouseEvent) => {
@@ -59,6 +58,7 @@ const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, 
 
 const PickGroup: FC = () => {
     const { student } = useContext(GlobalData)
+    const [loadRequest, setLoadRequest] = useState(false)
     const rowData: IRowField[] = [
         {
             title: 'Возраст',
@@ -119,9 +119,21 @@ const PickGroup: FC = () => {
                             cursor: 'not-allowed'
                         }
                 }
+                onClick={e => {
+                    e.preventDefault();
+                    setLoadRequest(true)
+                    student.pickGroup().then(
+                        () => {
+
+                        }
+                    ).catch().finally(() => {
+                        setLoadRequest(false);
+                    })
+                }}
             >
                 Найти группы
             </button>
+            {loadRequest && <Loader />}
         </div>
     )
 }

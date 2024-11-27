@@ -18,6 +18,17 @@ export default class Student {
         makeAutoObservable(this);
     }
 
+    clear() {
+        this.disciplines = []
+        this.student = null
+        this.selectDiscipline = ''
+        this.level = ''
+        this.age = null;
+        this.lastThems = {}
+        this.allTopic = {}
+        this.selectLastTheme = ''
+    }
+
     setupAge(newAge: string) {
         this.age = Number(newAge)
     }
@@ -75,5 +86,16 @@ export default class Student {
         const response = await Server.getTopicsAcrossDisciplines();
         const topics = response.data;
         this.allTopic = topics
+    }
+
+    async pickGroup() {
+        const request = await Server.pickGroup(
+            this.selectDiscipline,
+            this.level,
+            this.age!,
+            this.selectLastTheme ? this.selectLastTheme : this.lastThems[this.selectDiscipline].Description
+        );
+        this.clear()
+        return request
     }
 }

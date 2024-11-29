@@ -57,8 +57,9 @@ const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, 
 };
 
 const PickGroup: FC = () => {
-    const { student } = useContext(GlobalData)
+    const { student, notification } = useContext(GlobalData)
     const [loadRequest, setLoadRequest] = useState(false)
+    const [faledCheckAutoselectedTheme, setFaledCheckAutoselectedTheme] = useState(false)
     const rowData: IRowField[] = [
         {
             title: 'Возраст',
@@ -82,7 +83,7 @@ const PickGroup: FC = () => {
                 : (student.selectDiscipline && student.selectDiscipline in student.lastThems)
                     ? student.lastThems[student.selectDiscipline].Description.replace(/^[\s*]+|[\s*]+$/g, '')
                     : 'Не определена',
-            isComplete: Boolean(student.selectLastTheme || student.selectDiscipline && student.selectDiscipline in student.lastThems),
+            isComplete: Boolean(student.selectLastTheme || !faledCheckAutoselectedTheme && student.selectDiscipline && student.selectDiscipline in student.lastThems),
             variables: (student.selectDiscipline && student.selectDiscipline in student.allTopic)
                 ? student.allTopic[student.selectDiscipline].map(
                     str => str.replace(/^[\s*]+|[\s*]+$/g, '')
@@ -121,14 +122,21 @@ const PickGroup: FC = () => {
                 }
                 onClick={e => {
                     e.preventDefault();
-                    setLoadRequest(true)
-                    student.pickGroup().then(
-                        () => {
+                    if (student.selectLastTheme.length || student.checkAutoselectedThemes()) {
 
-                        }
-                    ).catch().finally(() => {
-                        setLoadRequest(false);
-                    })
+                        setLoadRequest(true)
+                        student.pickGroup().then(
+                            () => {
+
+                            }
+                        ).catch().finally(() => {
+                            setLoadRequest(false);
+                        })
+                    }
+                    else {
+                        setFaledCheckAutoselectedTheme(true);
+                        notification.showError('Не удачно', 'Автоопределнная тема не кореектна, укажите другую из списка.')
+                    }
                 }}
             >
                 Найти группы

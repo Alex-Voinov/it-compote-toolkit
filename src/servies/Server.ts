@@ -47,7 +47,7 @@ export default class Server {
         discipline: string,
         level: string,
         age: number,
-        lastTheme: string
+        lastTheme: string[]
     ): Promise<AxiosResponse<{ [key: string]: string[] }>> {
         return $api.get<{ [key: string]: string[] }>(
             '/pick-group',

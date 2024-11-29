@@ -31,7 +31,7 @@ const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, 
         };
     }, []);
 
-    return <div className={styles.row}>
+    return <div className={styles.row} key={title}>
         <div className={styles.title}>{title}</div>
         <button
             style={{ backgroundColor: isComplete ? 'rgb(63, 224, 189)' : 'rgb(107, 107, 107)' }}
@@ -46,10 +46,12 @@ const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, 
             ref={dropdownRef}
             className={styles.dropdawn}
         >
-            {variables.map(variable => <div onClick={() => {
-                setOpenDropdawn(false)
-                setupNewValue(variable)
-            }}>
+            {variables.map(variable => <div
+                key={variable}
+                onClick={() => {
+                    setOpenDropdawn(false)
+                    setupNewValue(variable)
+                }}>
                 {variable}
             </div>)}
         </div>}
@@ -126,9 +128,7 @@ const PickGroup: FC = () => {
 
                         setLoadRequest(true)
                         student.pickGroup().then(
-                            () => {
-
-                            }
+                            () => { }
                         ).catch().finally(() => {
                             setLoadRequest(false);
                         })

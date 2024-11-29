@@ -1,6 +1,6 @@
 import IStudent from "../models/Student";
 import Server from "../servies/Server"
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import calculateAge from "../utilities/dateFunc";
 import ITheme from "../models/Theme";
 import { setButtonTexts } from "../components/SelectLevelKnowledge/SelectLevelKnowledge";
@@ -14,6 +14,7 @@ export default class Student {
     lastThems: { [key: string]: ITheme } = {}
     allTopic: { [key: string]: string[] } = {}
     selectLastTheme: string = ''
+    suitableGroups: string[] | null = null
 
     constructor() {
         makeAutoObservable(this);
@@ -89,7 +90,7 @@ export default class Student {
         return suitableStringLevels.join(",")
     }
 
-    checkAutoselectedThemes(){
+    checkAutoselectedThemes() {
         // Все темы по выбранной дисциплине
         const themesForDiscipline = this.allTopic[this.selectDiscipline].map(
             str => str.replace(/^[\s*]+|[\s*]+$/g, '')
@@ -99,10 +100,10 @@ export default class Student {
         if (!(this.selectDiscipline in this.lastThems)) return false
         const autoselectedTheme = this.lastThems[this.selectDiscipline].Description.replace(/^[\s*]+|[\s*]+$/g, '')
         const resultCheck = autoselectedTheme in themesForDiscipline
-        if(!resultCheck) return false
+        if (!resultCheck) return false
         this.selectLastTheme = autoselectedTheme;
         return true
-    } 
+    }
 
     async uploadDisciplines() {
         const response = await Server.getDisciplines();
@@ -115,7 +116,9 @@ export default class Student {
     async getTopicsAcrossDisciplines() {
         const response = await Server.getTopicsAcrossDisciplines();
         const topics = response.data;
-        this.allTopic = topics
+        runInAction(() => {
+            this.allTopic = topics;
+        });
     }
 
     defineSetThemes() {
@@ -139,7 +142,10 @@ export default class Student {
             this.age!,
             this.defineSetThemes()
         );
-        this.clear()
-        return request
+    
+        runInAction(() => {
+            //this.clear();
+            this.suitableGroups = request.data.suitableGroups;
+        });
     }
 }

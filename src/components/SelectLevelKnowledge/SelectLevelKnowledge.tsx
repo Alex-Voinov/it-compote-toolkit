@@ -18,6 +18,7 @@ const SelectLevelKnowledge: FC = () => {
     for (let level of setButtonTexts) {
         buffer.push(
             <button
+                key={level}
                 onClick={
                     e => {
                         e.preventDefault();
@@ -28,14 +29,14 @@ const SelectLevelKnowledge: FC = () => {
             </button>
         )
         if (buffer.length === 2) {
-            buttons.push(<div>
+            buttons.push(<div key={`div-${level}`}>
                 {buffer}
             </div>)
             buffer = []
         }
     }
     if (buffer) buttons.push(
-        <div style={{ justifyContent: 'center' }}>
+        <div style={{ justifyContent: 'center' }} key={`last-div`}>
             {buffer}
         </div>
     )
@@ -46,7 +47,8 @@ const SelectLevelKnowledge: FC = () => {
                 <div>{`${FirstName} ${LastName}`}</div>
             </header>
             <main>
-                {Disciplines.length ? Disciplines.map(discipline => <div
+                {Disciplines.length ? Disciplines.map(discipline => <div 
+                    key={discipline.Discipline}
                     className={styles.disciplineRow}
                 >
                     <div>

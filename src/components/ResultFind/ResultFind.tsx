@@ -61,19 +61,20 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
     ) => {
         if (statusFind === StatusFind.matchesFound) return <section className={styles.matchesFoundSection}>
             <header>
-                {Object.values(visibleFiled).map(fieldName => <div>
+                {Object.values(visibleFiled).map(fieldName => <div key={fieldName}>
                     {fieldName}
                 </div>)}
             </header>
             {(studentsData as IStudent[]).map(
                 (student, numberRow) => <div
+                    key={`row-${numberRow}`}
                     className={styles.row}
                     onClick={() => { setSelectStudentsFromList(numberRow) }}
                     style={numberRow === selectStudentsFromList ? {
                         backgroundColor: 'rgb(155, 69, 247)',
                         color: '#eddffc'
                     } : {}}>
-                    {Object.keys(visibleFiled).map(field => <div>
+                    {Object.keys(visibleFiled).map(field => <div key={`${numberRow}-${field}`}>
                         {
                             //@ts-ignore
                             student[field] ? student[field] : '–'
@@ -88,8 +89,9 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
             for (let studentField in studentFieldForVisibleSingleResult) {
                 const translateField = studentFieldForVisibleSingleResult[studentField];
                 selectStudentField.push(
-                    <div className={styles.fieldSingleResult}>
-                        <div>{translateField}</div> <div>{
+                    <div className={styles.fieldSingleResult} key={`${translateField}-${studentField}`}>
+                        <div key={`div-${translateField}-${studentField}`}>{translateField}</div>
+                        <div key={`div-2-${translateField}-${studentField}`}>{
                             //@ts-ignore
                             singleStudent[studentField] ? singleStudent[studentField] : '–'
                         }</div>
@@ -98,16 +100,15 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
             }
             const selectAgentsField: JSX.Element[][] = []
             if (singleStudent.Agents)
-                singleStudent.Agents.forEach(agentData => {
+                singleStudent.Agents.forEach((agentData, number) => {
                     const oneAgent = [];
                     oneAgent.push(
-                        <header className={styles.agentTitle}>
+                        <header className={styles.agentTitle} key={`agentData-${number}`}>
                             {`${agentData.WhoIs}: ${agentData.LastName} ${agentData.FirstName} ${agentData.MiddleName}`}
                         </header>
                     )
                     for (let agentField in agentFieldForVisibleSingleResult) {
                         const translateField = studentFieldForVisibleSingleResult[agentField];
-                        console.log(agentField)
                         oneAgent.push(
                             <div className={styles.fieldSingleResult}>
                                 <div>{translateField}</div> <div>{
@@ -120,14 +121,14 @@ const ResultFind: FC<IResultFind> = ({ statusState, findStudentsState }) => {
                     selectAgentsField.push(oneAgent)
                 })
 
-            return <div className={styles.single}>
+            return <div className={styles.single} >
                 <header>
                     {`${singleStudent.LastName} ${singleStudent.FirstName} ${singleStudent.MiddleName}`}
                 </header>
                 <main>
                     {selectStudentField}
-                    {selectAgentsField && selectAgentsField.map(agent =>
-                        <div>
+                    {selectAgentsField && selectAgentsField.map((agent, number) =>
+                        <div key={number}>
                             {agent}
                         </div>
                     )}

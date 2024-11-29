@@ -20,6 +20,7 @@ const SelectDisciplines: FC = () => {
                 {
                     student.disciplines.length
                         ? student.disciplines.map((discipline, numberRow) => <div
+                            key={`${discipline}-${numberRow}`}
                             className={styles.row}
                             style={numberRow === disciplineNumber ? { backgroundColor: '#5a3183' } : {}}
                             onClick={() => setDisciplineNumber(numberRow)}

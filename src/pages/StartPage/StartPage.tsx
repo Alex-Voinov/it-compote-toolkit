@@ -32,7 +32,7 @@ const StartPage: FC = () => {
                         :
                         <SelectDisciplines />)
                 }
-                {student.level && <PickGroup />}
+                {student.level.length > 0 && student.suitableGroups === null && <PickGroup />}
             </AnimatePresence>
         </section>
     )

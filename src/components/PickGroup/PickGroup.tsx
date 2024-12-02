@@ -17,7 +17,6 @@ interface IRowField {
 const RowField: FC<IRowField> = ({ title, buttonText, variables, setupNewValue, isComplete = true }) => {
     const [openDropdawn, setOpenDropdawn] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
-
     const handleOutsideClick = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
             setOpenDropdawn(false);
@@ -128,8 +127,17 @@ const PickGroup: FC = () => {
 
                         setLoadRequest(true)
                         student.pickGroup().then(
-                            () => { }
-                        ).catch().finally(() => {
+                            () => {
+                                if (student.suitableGroups === null) notification.showError(
+                                    'Ошибка Hooli-Hop',
+                                    'Попробуйте повторить запрос позже.'
+                                )
+                            }
+                        ).catch(
+                            er => {
+                                notification.showError('Ошибка', er.message ? er.message : 'Данные об ошибке неизвестны')
+                            }
+                        ).finally(() => {
                             setLoadRequest(false);
                         })
                     }

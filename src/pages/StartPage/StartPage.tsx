@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { AnimatePresence } from "framer-motion";
 import SelectLevelKnowledge from '../../components/SelectLevelKnowledge/SelectLevelKnowledge'
 import PickGroup from '../../components/PickGroup/PickGroup'
+import SuitableGroups from '../../components/SuitableGroups/SuitableGroups'
 
 
 const StartPage: FC = () => {
@@ -32,8 +33,9 @@ const StartPage: FC = () => {
                         :
                         <SelectDisciplines />)
                 }
-                {student.level.length > 0 && student.suitableGroups === null && <PickGroup />}
             </AnimatePresence>
+            {(student.level.length > 0 && !Array.isArray(student.suitableGroups)) && <PickGroup />}
+            {Array.isArray(student.suitableGroups) && <SuitableGroups />}
         </section>
     )
 }

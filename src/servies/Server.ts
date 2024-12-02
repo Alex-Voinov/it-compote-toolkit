@@ -2,6 +2,7 @@ import axios from 'axios';
 import { AxiosResponse } from 'axios';
 import IStudentSerch from '../models/StudentSerch';
 import ITheme from '../models/Theme';
+import ISuitableGroup from '../models/SuitableGroup';
 
 const API_URL = `http://localhost:5000/api`;
 
@@ -48,8 +49,8 @@ export default class Server {
         level: string,
         age: number,
         lastTheme: string[]
-    ): Promise<AxiosResponse<{ [key: string]: string[] }>> {
-        return $api.get<{ [key: string]: string[] }>(
+    ): Promise<AxiosResponse<{ [key: string]: ISuitableGroup[] }>> {
+        return $api.get<{ [key: string]: ISuitableGroup[] }>(
             '/pick-group',
             {
                 params: {

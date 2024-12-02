@@ -4,6 +4,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import calculateAge from "../utilities/dateFunc";
 import ITheme from "../models/Theme";
 import { setButtonTexts } from "../components/SelectLevelKnowledge/SelectLevelKnowledge";
+import ISuitableGroup from "../models/SuitableGroup";
 
 export default class Student {
     disciplines: string[] = []
@@ -11,23 +12,21 @@ export default class Student {
     selectDiscipline: string = ''
     level: string = ''
     age: number | null = null;
-    lastThems: { [key: string]: ITheme } = {}
-    allTopic: { [key: string]: string[] } = {}
+    lastThems: { [key: string]: ITheme } = {}   // Все дисциплины - темы из холи хопа по ученику
+    allTopic: { [key: string]: string[] } = {}  // Все дисциплины - темы по гугл таблице
     selectLastTheme: string = ''
-    suitableGroups: string[] | null = null
+    suitableGroups: ISuitableGroup[] | null = null
 
     constructor() {
         makeAutoObservable(this);
     }
 
     clear() {
-        this.disciplines = []
         this.student = null
         this.selectDiscipline = ''
         this.level = ''
         this.age = null;
-        this.lastThems = {} // Все дисциплины - темы из холи хопа по ученику
-        this.allTopic = {} // Все дисциплины - темы по гугл таблице
+        this.lastThems = {}
         this.selectLastTheme = ''
     }
 
@@ -60,7 +59,9 @@ export default class Student {
     async defineLatsThems() {
         const response = await Server.getLastThems(this.student!.ClientId!)
         const themes = response.data
-        this.lastThems = themes;
+        runInAction(() => {
+            this.lastThems = themes;
+        });
         return Object.keys(themes).length
     }
 
@@ -105,6 +106,10 @@ export default class Student {
         return true
     }
 
+    clearSuitableGroups() {
+        this.suitableGroups = null;
+    }
+
     async uploadDisciplines() {
         const response = await Server.getDisciplines();
         if (response.data.Disciplines) {
@@ -136,16 +141,22 @@ export default class Student {
     }
 
     async pickGroup() {
-        const request = await Server.pickGroup(
-            this.selectDiscipline,
-            this.defineSetLevels(),
-            this.age!,
-            this.defineSetThemes()
-        );
-    
-        runInAction(() => {
-            //this.clear();
-            this.suitableGroups = request.data.suitableGroups;
-        });
+        try {
+            const request = await Server.pickGroup(
+                this.selectDiscipline,
+                this.defineSetLevels(),
+                this.age!,
+                this.defineSetThemes()
+            );
+            runInAction(() => {
+                this.suitableGroups = request.data.suitableGroups;
+                if (this.suitableGroups !== null) {
+                    this.clear();
+                }
+            });
+        } catch (er) {
+            return er
+        }
+
     }
 }

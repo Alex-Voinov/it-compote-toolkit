@@ -4,7 +4,7 @@ import IStudentSerch from '../models/StudentSerch';
 import ITheme from '../models/Theme';
 import ISuitableGroup from '../models/SuitableGroup';
 
-const API_URL = `http://localhost/api`;
+const API_URL = `http://compot-school.ru/api`;
 
 const $api = axios.create({
     withCredentials: true,

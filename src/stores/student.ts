@@ -150,9 +150,6 @@ export default class Student {
             );
             runInAction(() => {
                 this.suitableGroups = request.data.suitableGroups;
-                if (this.suitableGroups !== null) {
-                    //this.clear();
-                }
             });
         } catch (er) {
             return er

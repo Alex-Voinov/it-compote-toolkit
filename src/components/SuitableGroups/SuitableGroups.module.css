@@ -76,9 +76,9 @@
             width: 70%;
             justify-content: space-between;
             font-size: 0.8vw;
-            &>h1:first-of-type{
+            font-weight: 300;
+            &>h1:not(:last-of-type){
                 margin-bottom: 2em;
-                font-weight: 300;
             }
         }
     }

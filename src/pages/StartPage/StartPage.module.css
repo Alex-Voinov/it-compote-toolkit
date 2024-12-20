@@ -7,3 +7,26 @@
     background: rgb(112, 28, 144);
     background: linear-gradient(100deg, #9A5AAE 0%, #1C0E65 60%);
 }
+
+.back{
+    position: absolute;
+    z-index: 10;
+    top: 4vw;
+    left: 4vw;
+    width: 4vw;
+    height: 4vw;
+    background-color: #9134ad;
+    cursor: pointer;
+    border-radius: 0.5vw;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease-in-out;
+    &>img{
+        width: 60%;
+    }
+    &:hover{
+        background-color: #590074;
+    }
+}

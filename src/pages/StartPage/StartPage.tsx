@@ -18,6 +18,33 @@ const StartPage: FC = () => {
     const [findStudents, setFindStudents] = useState<IStudent | IStudent[] | null>(null);
     return (
         <section className={styles.wrapper}>
+            {(status || student.student) && <div
+                className={styles.back}
+                onClick={() => {
+                    if (Array.isArray(student.suitableGroups)) {
+                        student.suitableGroups = null
+                        return;
+                    }
+                    if (student.level.length > 0) {
+                        student.level = ''
+                        return;
+                    }
+                    if (student.selectDiscipline.length) {
+                        student.selectDiscipline = ''
+                        return;
+                    }
+                    if (student.student) {
+                        student.student = null;
+                        return;
+                    }
+                    if (status) {
+                        setStatus('')
+                        return;
+                    }
+                }}
+            >
+                <img src="/svg/back.svg" alt="go back" />
+            </div>}
             <StartForm setStatus={setStatus} setFindStudents={setFindStudents} />
             <AnimatePresence>
                 {status &&

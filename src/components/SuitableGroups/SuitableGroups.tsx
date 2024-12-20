@@ -17,7 +17,7 @@ const SuitableGroups: FC = () => {
                         key={group.groupId}
                     >
                         <div className={styles.idBlock}>
-                            ID Группы: {group.groupId}
+                            <a href={`https://it-school.t8s.ru/Learner/Group/${group.groupId}`} target="_blank">{group.groupId}</a> 
                         </div>
                         <div className={styles.groupContent}>
                             <h1>Последняя тема: {group.lastTheme}</h1>

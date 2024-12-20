@@ -124,7 +124,6 @@ const PickGroup: FC = () => {
                 onClick={e => {
                     e.preventDefault();
                     if (student.selectLastTheme.length || student.checkAutoselectedThemes()) {
-
                         setLoadRequest(true)
                         student.pickGroup().then(
                             () => {

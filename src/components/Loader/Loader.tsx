@@ -11,7 +11,7 @@ const Loader: FC = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
         >
-            <img src="/svg/loader.svg" alt="loader" />
+            <img src="%PUBLIC_URL%/svg/loader.svg" alt="loader" />
         </motion.section>
     )
 }

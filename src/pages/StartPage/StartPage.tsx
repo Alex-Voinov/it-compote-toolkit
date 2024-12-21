@@ -43,7 +43,7 @@ const StartPage: FC = () => {
                     }
                 }}
             >
-                <img src="/svg/back.svg" alt="go back" />
+                <img src="%PUBLIC_URL%/svg/back.svg" alt="go back" />
             </div>}
             <StartForm setStatus={setStatus} setFindStudents={setFindStudents} />
             <AnimatePresence>
